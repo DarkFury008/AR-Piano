@@ -127,8 +127,8 @@ function onResults(results) {
 
         const targetY = currentFinger.y * canvas.height;
         // Simple smoothing
-        smoothX += (targetX - smoothX) * 0.35;
-        smoothY += (targetY - smoothY) * 0.35;
+        smoothX += (targetX - smoothX) * 0.70;
+        smoothY += (targetY - smoothY) * 0.70;
 
 
         ctx.beginPath();
