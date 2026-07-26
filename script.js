@@ -16,6 +16,16 @@ async function startCamera() {
 
     video.srcObject = stream;
     await video.play();
+    const devices = await navigator.mediaDevices.enumerateDevices();
+
+    console.log(devices);
+
+    alert(
+         devices
+             .filter(device => device.kind === "videoinput")
+             .map(device => `${device.label}\n${device.deviceId}`)
+             .join("\n\n")
+    );
 
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
