@@ -117,31 +117,98 @@ async function processFrame() {
 
 function onResults(results) {
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    if(results.multiHandLandmarks.length>0){
+    // ---------- Draw Piano ----------
+
+    const keyCount = 7;
+
+    const keyboardWidth = canvas.width * 0.90;
+
+    const keyboardHeight = 140;
+
+    const startX = (canvas.width - keyboardWidth) / 2;
+
+    const startY = canvas.height - keyboardHeight - 30;
+
+    const keyWidth = keyboardWidth / keyCount;
+
+    const notes = ["C","D","E","F","G","A","B"];
+
+    let fingerX = -100;
+    let fingerY = -100;
+
+    if(results.multiHandLandmarks.length > 0){
 
         currentFinger = results.multiHandLandmarks[0][8];
 
         const targetX = currentFinger.x * canvas.width;
-
         const targetY = currentFinger.y * canvas.height;
-        // Simple smoothing
+
         smoothX += (targetX - smoothX) * 0.70;
         smoothY += (targetY - smoothY) * 0.70;
 
+        fingerX = smoothX;
+        fingerY = smoothY;
+    }
+
+    for(let i=0;i<keyCount;i++){
+
+        const x = startX + i * keyWidth;
+
+        const hovering =
+            fingerX > x &&
+            fingerX < x + keyWidth &&
+            fingerY > startY &&
+            fingerY < startY + keyboardHeight;
+
+        ctx.fillStyle = hovering ? "#4da6ff" : "rgba(255,255,255,0.75)";
+
+        ctx.fillRect(
+            x,
+            startY,
+            keyWidth,
+            keyboardHeight
+        );
+
+        ctx.strokeStyle = "black";
+
+        ctx.strokeRect(
+            x,
+            startY,
+            keyWidth,
+            keyboardHeight
+        );
+
+        ctx.fillStyle = "black";
+
+        ctx.font = "26px Arial";
+
+        ctx.textAlign = "center";
+
+        ctx.fillText(
+            notes[i],
+            x + keyWidth/2,
+            startY + keyboardHeight - 18
+        );
+
+    }
+
+    // ---------- Finger ----------
+
+    if(results.multiHandLandmarks.length > 0){
 
         ctx.beginPath();
 
         ctx.arc(
-            smoothX,
-            smoothY,
+            fingerX,
+            fingerY,
             14,
             0,
             Math.PI * 2
         );
 
-        ctx.fillStyle="red";
+        ctx.fillStyle = "red";
 
         ctx.fill();
 
