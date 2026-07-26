@@ -5,6 +5,8 @@ const startButton = document.getElementById("startButton");
 
 let hands;
 let currentFinger = null;
+let smoothX = 0;
+let smoothY = 0;
 
 async function startCamera() {
 
@@ -24,11 +26,11 @@ async function startCamera() {
                     },
 
                     width: {
-                        ideal: 1280
+                        ideal: 640
                     },
 
                     height: {
-                        ideal: 720
+                        ideal: 480
                     }
 
                 },
@@ -89,7 +91,7 @@ function initializeHands() {
 
         maxNumHands: 1,
 
-        modelComplexity: 1,
+        modelComplexity: 0,
 
         minDetectionConfidence: 0.75,
 
@@ -121,13 +123,23 @@ function onResults(results) {
 
         currentFinger = results.multiHandLandmarks[0][8];
 
-        const x=currentFinger.x*canvas.width;
+        const targetX = currentFinger.x * canvas.width;
 
-        const y=currentFinger.y*canvas.height;
+        const targetY = currentFinger.y * canvas.height;
+        // Simple smoothing
+        smoothX += (targetX - smoothX) * 0.35;
+        smoothY += (targetY - smoothY) * 0.35;
+
 
         ctx.beginPath();
 
-        ctx.arc(x,y,14,0,Math.PI*2);
+        ctx.arc(
+            smoothX,
+            smoothY,
+            14,
+            0,
+            Math.PI * 2
+        );
 
         ctx.fillStyle="red";
 
