@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,
+                   initial-scale=1.0,
+                   maximum-scale=1.0,
+                   user-scalable=no">
+
+    <title>AR Piano</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Tone.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+
+    <!-- MediaPipe Hands -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+</head>
+
+<body>
+
+<div id="app">
+
+    <video id="camera" autoplay playsinline></video>
+
+    <canvas id="overlay"></canvas>
+
+    <div id="keyboard">
+
+        <div class="key" data-note="C4">C</div>
+        <div class="key" data-note="D4">D</div>
+        <div class="key" data-note="E4">E</div>
+        <div class="key" data-note="F4">F</div>
+        <div class="key" data-note="G4">G</div>
+        <div class="key" data-note="A4">A</div>
+        <div class="key" data-note="B4">B</div>
+
+    </div>
+
+    <button id="startButton">
+        Start AR Piano
+    </button>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
